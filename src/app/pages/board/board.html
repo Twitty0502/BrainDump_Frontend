@@ -14,10 +14,41 @@
 </header>
 
 <main class="board">
+    <h1>{{ boardName }}:</h1>
+    <!-- Formulär för att skapa en ny idé. -->
+    <section class="create-idea">
+        <h2>Lägg till en idé</h2>
 
-    <h1>Välkommen till din board!</h1>
+        <form (ngSubmit)="createIdea()">
+            <label for="ideaTitle">Titel:</label>
+            <input id="ideaTitle" type="text" name="ideaTitle" [(ngModel)]="ideaTitle" maxlength="100" required
+                placeholder="Vad är din idé?">
 
+            <label for="ideaDescription">Beskrivning:</label>
+            <textarea id="ideaDescription" name="ideaDescription" [(ngModel)]="ideaDescription" rows="3"
+                placeholder="Beskrivning...">
+            </textarea>
+
+            <button type="submit" [disabled]="isSaving || !ideaTitle.trim()">
+                {{ isSaving ? 'Sparar...' : 'Lägg till idé' }}
+            </button>
+        </form>
+    </section>
+
+    <!--IDÉER FRÅN BACKEND-->
     <section class="ideas">
-        <h2>Idéer:</h2>
+        <h2>Idéer ({{ ideas.length }})</h2>
+
+        @for (idea of ideas; track idea.id) {
+        <article class="idea-card">
+            <h3>{{ idea.title }}</h3>
+
+            @if (idea.description) {
+            <p>{{ idea.description }}</p>
+            }
+        </article>
+        } @empty {
+        <p>Det finns inga idéer ännu.</p>
+        }
     </section>
 </main>

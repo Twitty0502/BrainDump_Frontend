@@ -40,6 +40,8 @@ export class CreateBoard {
 
       // Ifall skapandet lyckas, navigera till den nya boarden genom ID
       next: (board) => {
+        console.log('Board som skapades:', board);
+
         this.http.post<{ id: number; displayName: string }>(
           `http://localhost:8080/boards/${encodeURIComponent(board.id)}/participants`,
           { displayName }
@@ -49,6 +51,8 @@ export class CreateBoard {
             sessionStorage.setItem('participantId', String(participant.id));
             sessionStorage.setItem('participantName', participant.displayName);
             sessionStorage.setItem('boardId', board.id);
+            console.log('Navigerar till board-ID:', board.id);
+
             this.router.navigate(['/board', board.id]);
           },
           error: (error) => {
