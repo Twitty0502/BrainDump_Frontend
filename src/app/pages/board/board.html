@@ -1,9 +1,23 @@
-<main class="board">
-    <h1>BrainDump</h1>
+<header class="board-header">
+    <div class="board-id-container">
+        <span class="board-id">Board-ID: {{ boardId }}</span>
 
-    <p>Välkommen till din board!</p>
+        <button class="copy-button" type="button" (click)="copyBoardId()" title="Kopiera board-ID"
+            aria-label="Kopiera board-ID">
+            <span class="copy-icon">⧉</span>
+        </button>
+    </div>
+
+    <span class="brand">BrainDump</span>
+
+    <span class="participant-name">{{ displayName }}</span>
+</header>
+
+<main class="board">
+
+    <h1>Välkommen till din board!</h1>
 
     <section class="ideas">
-        <h2>Idéer</h2>
+        <h2>Idéer:</h2>
     </section>
 </main>
