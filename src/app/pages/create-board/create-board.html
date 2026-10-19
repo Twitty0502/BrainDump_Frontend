@@ -1,0 +1,17 @@
+<main class="home">
+
+    <h1>Skapa en board</h1>
+    <p>Fyll i informationen nedan för att skapa en ny board.</p>
+
+    <form (ngSubmit)="createBoard()">
+        <label for="boardName">Titel: </label>
+        <input id="boardName" type="text" name="boardName" [(ngModel)]="boardName" maxlength="100" required
+            placeholder="Ange board namn">
+
+        <button type="submit" [disabled]="!boardName.trim()">Skapa board</button>
+    </form>
+
+    <p>{{ message }}</p>
+
+    <a routerLink="/">Tillbaka till startsidan </a>
+</main>
