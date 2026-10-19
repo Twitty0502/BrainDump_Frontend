@@ -119,3 +119,78 @@ h1 {
     outline: 2px solid #64748b;
     outline-offset: 2px;
 }
+
+/* Innehållet på board-sidan. */
+.board {
+    max-width: 900px;
+    margin: 32px auto;
+    padding: 0 20px;
+}
+
+/* Formuläret för att skapa idéer. */
+.create-idea {
+    margin-bottom: 32px;
+    padding: 24px;
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+}
+
+/* Placera formulärets fält under varandra. */
+.create-idea form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.create-idea input,
+.create-idea textarea {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 12px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    font: inherit;
+}
+
+.create-idea textarea {
+    resize: vertical;
+}
+
+.create-idea button {
+    align-self: flex-start;
+    padding: 10px 18px;
+    border: none;
+    border-radius: 8px;
+    background: #374151;
+    color: white;
+    cursor: pointer;
+}
+
+.create-idea button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Listan med sparade idéer. */
+.ideas {
+    display: grid;
+    gap: 16px;
+}
+
+.idea-card {
+    padding: 18px;
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    overflow-wrap: anywhere;
+}
+
+.idea-card h3 {
+    margin-top: 0;
+}
+
+.idea-card p {
+    margin-bottom: 0;
+    white-space: pre-wrap;
+}
