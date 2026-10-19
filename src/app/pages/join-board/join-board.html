@@ -1,11 +1,20 @@
 <main class="home">
+    <h1>Gå med i en board</h1>
+    <p>Skriv in board-ID:t och ditt visningsnamn nedan:</p>
 
-    <body>
-        <h1>Gå med i en board</h1>
-        <p>Fyll i informationen nedan för att gå med i en befintlig board.</p>
-        <input type="text" placeholder="Ange board-id">
-        <button type="button">Gå med</button>
-        <br><br>
-        <a routerLink="/">Tillbaka till startsidan </a>
-    </body>
+    <form (ngSubmit)="joinBoard()">
+        <label for="boardId">Board-ID: </label>
+        <input id="boardId" type="text" name="boardId" [(ngModel)]="boardId" required placeholder="Ange boardens ID">
+
+        <br>
+        <label for="displayName">Ditt visningsnamn: </label>
+        <input id="displayName" type="text" name="displayName" [(ngModel)]="displayName" maxlength="15" required
+            placeholder="Ange ditt visningsnamn">
+
+        <button type="submit">Anslut</button>
+    </form>
+
+    <p>{{ message }}</p>
+
+    <a routerLink="/">Tillbaka till startsidan</a>
 </main>

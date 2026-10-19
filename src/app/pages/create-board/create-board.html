@@ -7,8 +7,13 @@
         <label for="boardName">Titel: </label>
         <input id="boardName" type="text" name="boardName" [(ngModel)]="boardName" maxlength="100" required
             placeholder="Ange board namn">
+        <br>
 
-        <button type="submit" [disabled]="!boardName.trim()">Skapa board</button>
+        <label for="displayName">Visningsnamn: </label>
+        <input id="displayName" type="text" name="displayName" [(ngModel)]="displayName" maxlength="15" required
+            placeholder="Ange ditt visningsnamn">
+
+        <button type="submit" [disabled]="!boardName.trim() || !displayName.trim()">Skapa board</button>
     </form>
 
     <p>{{ message }}</p>
