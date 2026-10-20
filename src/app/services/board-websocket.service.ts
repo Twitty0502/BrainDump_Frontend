@@ -10,6 +10,7 @@ import { BoardEvent } from '../models/board-event.model';
 export class BoardWebSocketService {
 
     // Anslut till WebSocket för en specifik board.
+    //https://rxjs.dev/guide/observable
     connect(boardId: string): Observable<BoardEvent> {
         return new Observable((subscriber) => {
             if (!boardId) {
@@ -43,6 +44,9 @@ export class BoardWebSocketService {
             };
 
             // Stäng anslutningen när subscriben avslutas.
+            // Källa: RxJS – Observable och MDN – WebSocket.close()
+            // https://rxjs.dev/guide/observable
+            // https://developer.mozilla.org/en-US/docs/Web/API/WebSocket/close
             return () => {
                 if (
                     socket.readyState === WebSocket.CONNECTING ||

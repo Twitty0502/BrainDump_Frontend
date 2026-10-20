@@ -114,11 +114,15 @@ export class Board implements OnInit, OnDestroy {
     this.ideaService.getByBoard(this.boardId).subscribe({
       next: (ideas) => {
         this.ideas = ideas;
+
+        // Be angular uppdatera innehållet på sidan
         this.cdr.detectChanges();
       },
       error: (error) => {
         console.error('Kunde inte hämta idéer:', error);
         this.message = 'Det gick inte att hämta idéerna.';
+
+        // Be angular uppdatera innehållet på sidan
         this.cdr.detectChanges();
       }
     });
@@ -137,6 +141,11 @@ export class Board implements OnInit, OnDestroy {
     }
 
     // Kontrollera att deltagarens ID finns.
+    // // Avbryt skapandet av idén om ID:t saknas, är 0 eller inte är
+    // ett ändligt tal, till exempel NaN eller Infinity.
+    // Källa: MDN Web Docs – Number.isFinite() och Logical NOT (!)
+    // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/isFinite
+    // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Logical_NOT
     if (!participantId || !Number.isFinite(participantId)) {
       this.message = 'Deltagaruppgifter saknas. Gå med i boarden igen.';
       return;

@@ -34,6 +34,10 @@ export class JoinBoard {
       return;
     }
 
+    // Källa: MDN Web Docs – encodeURIComponent()
+    // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURIComponent
+    // Källa: Angular – HttpClient
+    // https://angular.dev/api/common/http/HttpClient
     this.http.post<{ id: number; displayName: string }>(
       // encode ser till att ID kodas för att skapa säker URL, t.ex. om ID innehåller mellanslag eller specialtecken.
       `http://localhost:8080/boards/${encodeURIComponent(id)}/participants`,
