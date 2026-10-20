@@ -16,6 +16,7 @@ export class BoardService {
     constructor(private http: HttpClient) { }
 
     // Hämtar alla boards från backend.
+    // Källa: https://rxjs.dev/guide/observable
     getAll(): Observable<BoardInfo[]> {
         return this.http.get<BoardInfo[]>(this.apiUrl);
     }

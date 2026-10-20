@@ -13,6 +13,7 @@ export class IdeaService {
     constructor(private http: HttpClient) { }
 
     // Hämta idéer för en specifik board.
+    // Källa: https://rxjs.dev/guide/observable
     getByBoard(boardId: string): Observable<Idea[]> {
         return this.http.get<Idea[]>(
             `${this.apiUrl}/board/${encodeURIComponent(boardId)}`
@@ -20,6 +21,7 @@ export class IdeaService {
     }
 
     // Skapa en ny idé.
+    // Källa: https://rxjs.dev/guide/observable
     create(request: CreateIdeaRequest): Observable<Idea> {
         return this.http.post<Idea>(
             `${this.apiUrl}/create`,
@@ -28,6 +30,7 @@ export class IdeaService {
     }
 
     // Ta bort en idé.
+    // Källa: https://rxjs.dev/guide/observable
     delete(ideaId: number): Observable<void> {
         return this.http.delete<void>(
             `${this.apiUrl}/${ideaId}`
