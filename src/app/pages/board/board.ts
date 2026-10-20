@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
@@ -18,7 +18,7 @@ interface Idea {
   templateUrl: './board.html',
   styleUrl: './board.css',
 })
-export class Board implements OnInit {
+export class Board implements OnInit, OnDestroy {
 
   // vid skapande av board
   boardId = '';
@@ -38,8 +38,48 @@ export class Board implements OnInit {
   message = "";
   isSaving = false;
 
+  // WebSocket-anslutningen till den aktuella boarden.
+  private boardSocket?: WebSocket;
+
 
   constructor(private route: ActivatedRoute, private http: HttpClient, private cdr: ChangeDetectorRef) { }
+  // Stänger WebSocket när användaren lämnar boarden.
+  ngOnDestroy(): void {
+    this.boardSocket?.close();
+  }
+
+  connectWebSocket(): void {
+    if (!this.boardId) {
+      return;
+    }
+
+    this.boardSocket = new WebSocket(
+      `ws://localhost:8080/ws/boards/${encodeURIComponent(this.boardId)}`
+    );
+
+    // Tar emot händelser från backend.
+    this.boardSocket.onmessage = (event) => {
+      try {
+        const data = JSON.parse(event.data);
+
+        if (data.type === 'IDEA_CREATED' && data.idea) {
+          const newIdea = data.idea as Idea;
+
+          // Hindra att samma ide läggs till flera gånger
+          if (!this.ideas.some(idea => idea.id === newIdea.id)) {
+            this.ideas = [...this.ideas, newIdea];
+            this.cdr.detectChanges();
+          }
+        }
+      } catch (error) {
+        console.error('Kunde inte läsa WebSocket-meddelandet:', error);
+      }
+    };
+
+    this.boardSocket.onerror = (error) => {
+      console.error('WebSocket-fel:', error);
+    };
+  }
 
   // Hämtar boardens ID från URL:en och sparar det i boardId.
   // Om ID saknas används en tom sträng. ID:t används för att hämta rätt board från backend.
@@ -49,6 +89,9 @@ export class Board implements OnInit {
 
     // hämta namnet på deltagaren från sessionStorage
     this.displayName = sessionStorage.getItem('participantName') ?? '';
+
+    // Anslut till WebSocket för den aktuella boarden.
+    this.connectWebSocket();
 
     // hämta idéerna som tillhör den specifika boarden
     this.loadIdeas();
@@ -106,18 +149,24 @@ export class Board implements OnInit {
     }).subscribe({
       next: (createdIdea) => {
         // Lägg till den skapade idén direkt i listan.
-        this.ideas = [...this.ideas, createdIdea];
+        // lägg endast till idén om den inte redan kommit in via ws
+        if (!this.ideas.some(idea => idea.id === createdIdea.id)) {
+          this.ideas = [...this.ideas, createdIdea];
+        }
 
         // Töm formuläret efter att idén har sparats.
         this.ideaTitle = '';
         this.ideaDescription = '';
         this.isSaving = false;
         this.message = 'Idén har sparats!';
+        this.cdr.detectChanges();
+
       },
       error: (error) => {
         console.error('Kunde inte skapa idén:', error);
         this.isSaving = false;
         this.message = 'Det gick inte att spara idén. Försök igen.';
+
       }
     });
   }
