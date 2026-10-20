@@ -42,10 +42,12 @@
         @for (idea of ideas; track idea.id) {
         <article class="idea-card">
             <h3>{{ idea.title }}</h3>
-            <small> Skapad av: {{idea.participant?.displayName }}</small>
 
             @if (idea.description) {
-            <p>{{ idea.description }}</p>
+            <p> Beskrivning: {{ idea.description }}</p>
+            <BR>
+            <small> Skapad av: {{idea.participant?.displayName }}</small>
+
             }
         </article>
         } @empty {

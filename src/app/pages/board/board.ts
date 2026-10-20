@@ -1,16 +1,15 @@
 import { Component, OnInit, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { HttpClient } from '@angular/common/http';
 
+import { Subscription } from 'rxjs';
 
-interface Idea {
-  id: number;
-  title: string;
-  description: string;
-  board?: { id: string };
-  participant?: { id: number; displayName?: string };
-}
+// services and models
+import { IdeaService } from '../../services/idea.service';
+import { Idea } from '../../models/idea.model';
+import { BoardWebSocketService } from '../../services/board-websocket.service';
+import { BoardService } from '../../services/board.service';
+import { BoardEvent } from '../../models/board-event.model';
 
 @Component({
   selector: 'app-board',
@@ -39,13 +38,13 @@ export class Board implements OnInit, OnDestroy {
   isSaving = false;
 
   // WebSocket-anslutningen till den aktuella boarden.
-  private boardSocket?: WebSocket;
+  private boardSubscription?: Subscription;
 
-
-  constructor(private route: ActivatedRoute, private http: HttpClient, private cdr: ChangeDetectorRef) { }
+  constructor(private route: ActivatedRoute, private cdr: ChangeDetectorRef, private ideaService: IdeaService, private boardWebSocketService: BoardWebSocketService, private boardService: BoardService
+  ) { }
   // Stänger WebSocket när användaren lämnar boarden.
   ngOnDestroy(): void {
-    this.boardSocket?.close();
+    this.boardSubscription?.unsubscribe();
   }
 
   connectWebSocket(): void {
@@ -53,32 +52,38 @@ export class Board implements OnInit, OnDestroy {
       return;
     }
 
-    this.boardSocket = new WebSocket(
-      `ws://localhost:8080/ws/boards/${encodeURIComponent(this.boardId)}`
-    );
+    this.boardSubscription = this.boardWebSocketService
+      .connect(this.boardId)
+      .subscribe({
+        next: (data: BoardEvent) => {
+          switch (data.type) {
+            case 'IDEA_CREATED':
+              // Lägg bara till idén om den inte redan finns.
+              if (!this.ideas.some(idea => idea.id === data.idea.id)) {
+                this.ideas = [...this.ideas, data.idea];
+                this.cdr.detectChanges();
+              }
+              break;
 
-    // Tar emot händelser från backend.
-    this.boardSocket.onmessage = (event) => {
-      try {
-        const data = JSON.parse(event.data);
+            case 'IDEA_DELETED':
+              // Ta bort idén från listan.
+              this.ideas = this.ideas.filter(
+                idea => idea.id !== data.ideaId
+              );
+              this.cdr.detectChanges();
+              break;
 
-        if (data.type === 'IDEA_CREATED' && data.idea) {
-          const newIdea = data.idea as Idea;
-
-          // Hindra att samma ide läggs till flera gånger
-          if (!this.ideas.some(idea => idea.id === newIdea.id)) {
-            this.ideas = [...this.ideas, newIdea];
-            this.cdr.detectChanges();
+            case 'BOARD_CLEARED':
+              // Töm listan när alla idéer har tagits bort.
+              this.ideas = [];
+              this.cdr.detectChanges();
+              break;
           }
+        },
+        error: (error) => {
+          console.error('WebSocket-fel:', error);
         }
-      } catch (error) {
-        console.error('Kunde inte läsa WebSocket-meddelandet:', error);
-      }
-    };
-
-    this.boardSocket.onerror = (error) => {
-      console.error('WebSocket-fel:', error);
-    };
+      });
   }
 
   // Hämtar boardens ID från URL:en och sparar det i boardId.
@@ -100,21 +105,21 @@ export class Board implements OnInit, OnDestroy {
     this.loadBoardName();
   }
 
-  loadIdeas() {
+  loadIdeas(): void {
     if (!this.boardId) {
       this.message = 'Board ID saknas';
       return;
     }
 
-    this.http.get<Idea[]>(
-      `http://localhost:8080/ideas/board/${encodeURIComponent(this.boardId)}`
-    ).subscribe({
+    this.ideaService.getByBoard(this.boardId).subscribe({
       next: (ideas) => {
         this.ideas = ideas;
+        this.cdr.detectChanges();
       },
       error: (error) => {
         console.error('Kunde inte hämta idéer:', error);
         this.message = 'Det gick inte att hämta idéerna.';
+        this.cdr.detectChanges();
       }
     });
   }
@@ -141,7 +146,7 @@ export class Board implements OnInit, OnDestroy {
     this.isSaving = true;
 
     // Skicka idén till backend med boardens och deltagarens ID.
-    this.http.post<Idea>('http://localhost:8080/ideas/create', {
+    this.ideaService.create({
       title,
       description,
       board: { id: this.boardId },
@@ -166,21 +171,18 @@ export class Board implements OnInit, OnDestroy {
         console.error('Kunde inte skapa idén:', error);
         this.isSaving = false;
         this.message = 'Det gick inte att spara idén. Försök igen.';
-
+        this.cdr.detectChanges();
       }
     });
   }
 
   // hämtar boardNamn från backend
-  loadBoardName() {
-    this.http.get<{ id: string; name: string }[]>(
-      'http://localhost:8080/boards'
-    ).subscribe({
+  loadBoardName(): void {
+    this.boardService.getAll().subscribe({
       next: (boards) => {
-        const board = boards.find(b => b.id === this.boardId);
+        const board = boards.find(board => board.id === this.boardId);
         this.boardName = board?.name ?? 'boarden';
-
-        // Ber Angular att uppdatera vyn.
+        // be angular uppdatera vyn
         this.cdr.detectChanges();
       },
       error: (error) => {
