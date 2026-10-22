@@ -59,6 +59,18 @@
             </section>
 
         </div>
-        <aside class="board-sidebar"><app-ai-assistant></app-ai-assistant></aside>
+        <aside class="board-sidebar"><app-ai-assistant></app-ai-assistant>
+
+            <div class="participants">
+                <h3>Deltagare</h3>
+
+                @for (name of participants; track name) {
+                <div>{{ name }}</div>
+                } @empty {
+                <div>Inga deltagare anslutna.</div>
+                }
+            </div>
+        </aside>
     </div>
+
 </main>

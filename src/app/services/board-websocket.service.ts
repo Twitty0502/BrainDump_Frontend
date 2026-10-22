@@ -18,8 +18,12 @@ export class BoardWebSocketService {
                 return;
             }
 
+            // Hämtar deltagarID från sessionStorage
+            const participantId = sessionStorage.getItem('participantId');
+
+            // Ansluter till board och skickar med deltagarID
             const socket = new WebSocket(
-                `ws://localhost:8080/ws/boards/${encodeURIComponent(boardId)}`
+                `ws://localhost:8080/ws/boards/${encodeURIComponent(boardId)}?participantId=${encodeURIComponent(participantId ?? '')}`
             );
 
             socket.onmessage = (event) => {

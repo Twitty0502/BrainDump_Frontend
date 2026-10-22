@@ -39,6 +39,9 @@ export class Board implements OnInit, OnDestroy {
   message = "";
   isSaving = false;
 
+  // Anslutna deltagare
+  participants: string[] = [];
+
   // WebSocket-anslutningen till den aktuella boarden.
   private boardSubscription?: Subscription;
 
@@ -78,6 +81,12 @@ export class Board implements OnInit, OnDestroy {
             case 'BOARD_CLEARED':
               // Töm listan när alla idéer har tagits bort.
               this.ideas = [];
+              this.cdr.detectChanges();
+              break;
+
+            case 'PARTICIPANTS_UPDATED':
+              // Sparar den uppdaterade listan av anslutna deltagare
+              this.participants = data.participants;
               this.cdr.detectChanges();
               break;
           }
