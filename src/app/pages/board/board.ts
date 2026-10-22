@@ -10,10 +10,11 @@ import { Idea } from '../../models/idea.model';
 import { BoardWebSocketService } from '../../services/board-websocket.service';
 import { BoardService } from '../../services/board.service';
 import { BoardEvent } from '../../models/board-event.model';
+import { AiAssistant } from './components/ai-assistant/ai-assistant';
 
 @Component({
   selector: 'app-board',
-  imports: [FormsModule],
+  imports: [FormsModule, AiAssistant],
   templateUrl: './board.html',
   styleUrl: './board.css',
 })
@@ -29,6 +30,7 @@ export class Board implements OnInit, OnDestroy {
 
   // lista idéer från backend
   ideas: Idea[] = [];
+  private ideasLoaded = false;
 
   // hämta board namnet från backend
   boardName = "";
@@ -113,7 +115,16 @@ export class Board implements OnInit, OnDestroy {
 
     this.ideaService.getByBoard(this.boardId).subscribe({
       next: (ideas) => {
-        this.ideas = ideas;
+        // Behåll både idéerna som hämtas från backend och de som redan
+        // har lagts till i listan, så att ingen idé skrivs över.        
+        const combinedIdeas = [...ideas, ...this.ideas];
+
+        this.ideas = combinedIdeas.filter(
+          (idea, index, allIdeas) =>
+            allIdeas.findIndex(item => item.id === idea.id) === index
+        );
+
+        this.ideasLoaded = true;
 
         // Be angular uppdatera innehållet på sidan
         this.cdr.detectChanges();
