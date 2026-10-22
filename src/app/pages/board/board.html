@@ -32,7 +32,7 @@
                         placeholder="Beskrivning...">
             </textarea>
 
-                    <button type="submit" [disabled]="isSaving || !ideaTitle.trim()">
+                    <button type="submit" [disabled]="isSaving || !ideaTitle.trim() || !ideaDescription.trim()">
                         {{ isSaving ? 'Sparar...' : 'Lägg till idé' }}
                     </button>
                 </form>
@@ -40,14 +40,14 @@
 
             <!--IDÉER FRÅN BACKEND-->
             <section class="ideas">
-                <h2>Idéer ({{ ideas.length }})</h2>
+                <h1>Idéer ({{ ideas.length }})</h1>
 
                 @for (idea of ideas; track idea.id) {
                 <article class="idea-card">
-                    <h3>{{ idea.title }}</h3>
+                    <h2>{{ idea.title }}</h2>
 
                     @if (idea.description) {
-                    <p> Beskrivning: {{ idea.description }}</p>
+                    <h3> Beskrivning: {{ idea.description }}</h3>
                     <BR>
                     <small> Skapad av: {{idea.participant?.displayName }}</small>
 
@@ -62,7 +62,7 @@
         <aside class="board-sidebar"><app-ai-assistant></app-ai-assistant>
 
             <div class="participants">
-                <h3>Deltagare</h3>
+                <h2>Anslutna deltagare:</h2>
 
                 @for (name of participants; track name) {
                 <div>{{ name }}</div>
