@@ -11,7 +11,7 @@ import { BoardWebSocketService } from '../../services/board-websocket.service';
 import { BoardService } from '../../services/board.service';
 import { BoardEvent } from '../../models/board-event.model';
 import { AiAssistant } from './components/ai-assistant/ai-assistant';
-
+import { RecentBoardsService } from '../../services/recent-boards.service';
 @Component({
   selector: 'app-board',
   imports: [FormsModule, AiAssistant],
@@ -45,7 +45,7 @@ export class Board implements OnInit, OnDestroy {
   // WebSocket-anslutningen till den aktuella boarden.
   private boardSubscription?: Subscription;
 
-  constructor(private route: ActivatedRoute, private cdr: ChangeDetectorRef, private ideaService: IdeaService, private boardWebSocketService: BoardWebSocketService, private boardService: BoardService
+  constructor(private route: ActivatedRoute, private cdr: ChangeDetectorRef, private ideaService: IdeaService, private boardWebSocketService: BoardWebSocketService, private boardService: BoardService, private recentBoardsService: RecentBoardsService
   ) { }
   // Stänger WebSocket när användaren lämnar boarden.
   ngOnDestroy(): void {
@@ -211,6 +211,7 @@ export class Board implements OnInit, OnDestroy {
       next: (boards) => {
         const board = boards.find(board => board.id === this.boardId);
         this.boardName = board?.name ?? 'boarden';
+        this.recentBoardsService.recordVisit(this.boardId, this.boardName);
         // be angular uppdatera vyn
         this.cdr.detectChanges();
       },

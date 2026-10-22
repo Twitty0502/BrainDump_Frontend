@@ -16,5 +16,17 @@
 
     <p>{{ message }}</p>
 
+    <section class="recent-boards">
+        <h2>Senast besökt board:</h2>
+
+        @for (board of recentBoards; track board.id) {
+        <button type="button" class="recent-board" (click)="selectRecentBoard(board)">
+            {{ board.name }}
+        </button>
+        } @empty {
+        <div>Inga nyligen besökta boards.</div>
+        }
+    </section>
+
     <a routerLink="/">Tillbaka till startsidan</a>
 </main>

@@ -1,7 +1,9 @@
 import { HttpClient } from '@angular/common/http';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { RecentBoard } from '../../models/recent-board.model';
+import { RecentBoardsService } from '../../services/recent-boards.service';
 
 @Component({
   selector: 'app-join-board',
@@ -9,7 +11,7 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './join-board.html',
   styleUrl: './join-board.css',
 })
-export class JoinBoard {
+export class JoinBoard implements OnInit {
 
   // uppgifter användaren fyller i inputfältet
   boardId = '';
@@ -18,10 +20,24 @@ export class JoinBoard {
   // eventuellt felmeddelande 
   message = '';
 
+  // Visa senaste boarden
+  recentBoards: RecentBoard[] = [];
+
   constructor(
     private http: HttpClient,
-    private router: Router
+    private router: Router,
+    private recentBoardsService: RecentBoardsService
   ) { }
+
+  ngOnInit(): void {
+    this.recentBoards = this.recentBoardsService.getRecentBoards();
+  }
+
+  // Gör senaste boarden klickbar
+  selectRecentBoard(board: RecentBoard): void {
+    this.boardId = board.id;
+    this.message = "";
+  }
 
   joinBoard() {
     // Trimma bort möjliga mellanslag i början och slutet 
