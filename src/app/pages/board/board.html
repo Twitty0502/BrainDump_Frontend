@@ -14,44 +14,51 @@
 </header>
 
 <main class="board">
-    <h1>{{ boardName }}:</h1>
-    <!-- Formulär för att skapa en ny idé. -->
-    <section class="create-idea">
-        <h2>Lägg till en idé</h2>
+    <div class="board-layout">
+        <div class="board-content">
 
-        <form (ngSubmit)="createIdea()">
-            <label for="ideaTitle">Titel:</label>
-            <input id="ideaTitle" type="text" name="ideaTitle" [(ngModel)]="ideaTitle" maxlength="100" required
-                placeholder="Vad är din idé?">
+            <h1>{{ boardName }}:</h1>
+            <!-- Formulär för att skapa en ny idé. -->
+            <section class="create-idea">
+                <h2>Lägg till en idé</h2>
 
-            <label for="ideaDescription">Beskrivning:</label>
-            <textarea id="ideaDescription" name="ideaDescription" [(ngModel)]="ideaDescription" rows="3"
-                placeholder="Beskrivning...">
+                <form (ngSubmit)="createIdea()">
+                    <label for="ideaTitle">Titel:</label>
+                    <input id="ideaTitle" type="text" name="ideaTitle" [(ngModel)]="ideaTitle" maxlength="20" required
+                        placeholder="Vad är din idé?">
+
+                    <label for="ideaDescription">Beskrivning:</label>
+                    <textarea id="ideaDescription" name="ideaDescription" [(ngModel)]="ideaDescription" rows="3"
+                        placeholder="Beskrivning...">
             </textarea>
 
-            <button type="submit" [disabled]="isSaving || !ideaTitle.trim()">
-                {{ isSaving ? 'Sparar...' : 'Lägg till idé' }}
-            </button>
-        </form>
-    </section>
+                    <button type="submit" [disabled]="isSaving || !ideaTitle.trim()">
+                        {{ isSaving ? 'Sparar...' : 'Lägg till idé' }}
+                    </button>
+                </form>
+            </section>
 
-    <!--IDÉER FRÅN BACKEND-->
-    <section class="ideas">
-        <h2>Idéer ({{ ideas.length }})</h2>
+            <!--IDÉER FRÅN BACKEND-->
+            <section class="ideas">
+                <h2>Idéer ({{ ideas.length }})</h2>
 
-        @for (idea of ideas; track idea.id) {
-        <article class="idea-card">
-            <h3>{{ idea.title }}</h3>
+                @for (idea of ideas; track idea.id) {
+                <article class="idea-card">
+                    <h3>{{ idea.title }}</h3>
 
-            @if (idea.description) {
-            <p> Beskrivning: {{ idea.description }}</p>
-            <BR>
-            <small> Skapad av: {{idea.participant?.displayName }}</small>
+                    @if (idea.description) {
+                    <p> Beskrivning: {{ idea.description }}</p>
+                    <BR>
+                    <small> Skapad av: {{idea.participant?.displayName }}</small>
 
-            }
-        </article>
-        } @empty {
-        <p>Det finns inga idéer ännu.</p>
-        }
-    </section>
+                    }
+                </article>
+                } @empty {
+                <p>Det finns inga idéer ännu.</p>
+                }
+            </section>
+
+        </div>
+        <aside class="board-sidebar"><app-ai-assistant></app-ai-assistant></aside>
+    </div>
 </main>

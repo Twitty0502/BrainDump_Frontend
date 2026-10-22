@@ -194,3 +194,27 @@ h1 {
     margin-bottom: 0;
     white-space: pre-wrap;
 }
+
+
+
+/* ANPASSA INNEHÅLL VÄNSTER (FORMULÄR) - HÖGER (AI) */
+.board-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 320px;
+    gap: 24px;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 24px;
+    align-items: start;
+}
+
+.board-content {
+    min-width: 0;
+}
+
+.board-sidebar {
+    width: 320px;
+    justify-self: end;
+    position: sticky;
+    top: 24px;
+}
