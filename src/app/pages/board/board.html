@@ -49,8 +49,10 @@
                     @if (idea.description) {
                     <h3> Beskrivning: {{ idea.description }}</h3>
                     <BR>
-                    <small> Skapad av: {{idea.participant?.displayName }}</small>
+                    <small> Skapad av: {{idea.participant?.displayName }} </small>
 
+
+                    <button type="button" (click)="deleteIdea(idea.id)">🗑️</button>
                     }
                 </article>
                 } @empty {
