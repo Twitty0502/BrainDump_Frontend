@@ -222,6 +222,19 @@ export class Board implements OnInit, OnDestroy {
     });
   }
 
+  // Ta bort idé genom ID
+  deleteIdea(ideaId: number) {
+
+    this.ideaService.delete(ideaId).subscribe({
+      next: () => {
+        // Borttagning lyckades
+      },
+      error: (error) => {
+        console.error('Idén kunde inte raderas, error');
+      }
+    });
+  }
+
   // Kopierar boardens ID till urklipp.
   async copyBoardId() {
     try {
