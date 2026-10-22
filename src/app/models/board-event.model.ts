@@ -19,8 +19,15 @@ export interface BoardClearedEvent {
     boardId: string;
 }
 
+// När anslutna deltagare uppdateras
+export interface ParticipantsUpdatedEvent {
+    type: 'PARTICIPANTS_UPDATED';
+    participants: string[];
+}
+
 // Alla WebSocket-"event"
 export type BoardEvent =
     | IdeaCreatedEvent
     | IdeaDeletedEvent
-    | BoardClearedEvent;
+    | BoardClearedEvent
+    | ParticipantsUpdatedEvent;
