@@ -64,3 +64,44 @@
 .ai-box button {
     background: #374151;
 }
+
+.ai-answer {
+    margin: 18px 0 12px;
+    color: #1e293b;
+    line-height: 1.5;
+}
+
+.idea-group {
+    margin-top: 24px;
+    padding-top: 16px;
+    border-top: 4px solid #374151;
+}
+
+.idea-group h3 {
+    margin: 0 0 10px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #1e293b;
+}
+
+.idea-result {
+    padding: 12px 0;
+    border-bottom: 1px solid #cbd5e1;
+}
+
+.idea-result:last-child {
+    border-bottom: none;
+}
+
+.idea-result strong {
+    display: block;
+    margin-bottom: 5px;
+    color: #334155;
+    font-weight: 700;
+}
+
+.idea-result p {
+    margin: 0;
+    color: #64748b;
+    line-height: 1.5;
+}

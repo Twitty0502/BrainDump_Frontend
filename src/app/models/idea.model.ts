@@ -3,6 +3,14 @@ export interface Idea {
     title: string;
     description: string;
     board?: { id: string };
+    categories:
+    | 'NEW_IDEA'
+    | 'IMPROVEMENT'
+    | 'PROBLEM_SOLVING'
+    | 'PROCESS_AND_WAYS_OF_WORKING'
+    | 'ACTIVITY_AND_PROJECT'
+    | 'CONTENT_AND_COMMUNICATION'
+    | 'OTHER';
     participant?: {
         id: number;
         displayName?: string;
