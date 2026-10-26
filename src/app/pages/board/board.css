@@ -129,8 +129,8 @@ h1 {
 
 /* Formuläret för att skapa idéer. */
 .create-idea {
-    margin-bottom: 32px;
-    padding: 24px;
+    margin-bottom: 18px;
+    padding: 16px;
     background: #ffffff;
     border: 1px solid #e5e7eb;
     border-radius: 12px;
@@ -175,23 +175,40 @@ h1 {
 /* Listan med sparade idéer. */
 .ideas {
     display: grid;
-    gap: 16px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+    align-items: start;
 }
 
+/* Idé - rubriken ska hamna ovanför idéerna */
+.ideas>h1 {
+    grid-column: 1 / -1;
+    margin-top: 0;
+    margin-bottom: 8px;
+}
+
+/* Anpassa korten */
 .idea-card {
-    padding: 18px;
+    min-width: 0;
+    box-sizing: border-box;
+    padding: 10px 12px;
     background: #ffffff;
     border: 1px solid #e5e7eb;
-    border-radius: 10px;
+    border-radius: 8px;
     overflow-wrap: anywhere;
 }
 
+/* Anpassa texten */
 .idea-card h3 {
-    margin-top: 0;
+    margin: 0 0 4px;
+    font-size: 0.95rem;
+    line-height: 1.35;
 }
 
 .idea-card p {
-    margin-bottom: 0;
+    margin: 0;
+    font-size: 0.85rem;
+    line-height: 1.4;
     white-space: pre-wrap;
 }
 
@@ -201,10 +218,10 @@ h1 {
 .board-layout {
     display: grid;
     grid-template-columns: minmax(0, 1fr) 320px;
-    gap: 24px;
+    gap: 16px;
     width: 100%;
     box-sizing: border-box;
-    padding: 24px;
+    padding: 16px;
     align-items: start;
 }
 

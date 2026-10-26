@@ -2,7 +2,29 @@
     <h1>AI-assistent</h1>
     <h2>Kategorisera och sammanfatta dina idéer:</h2>
 
-    <textarea placeholder="Vad vill du ha hjälp med?" id="ai-textfield">
-    </textarea>
-    <button>Fråga AI</button>
+    <textarea [(ngModel)]="question" placeholder="Vad vill du ha hjälp med?" id="ai-textfield">
+</textarea>
+    <button type="button" (click)="askAI()">
+        Fråga AI
+    </button>
+
+    @if (answer) {
+    <p class="ai-answer">{{ answer }}</p>
+    }
+
+    @for (group of groupedIdeas; track group.category) {
+    <section class="idea-group">
+        <h3>{{ getCategoryName(group.category) }}:</h3>
+
+        @for (idea of group.ideas; track idea.id) {
+        <article class="idea-result">
+            <strong>{{ idea.title }}</strong>
+
+            @if (idea.description) {
+            <p>{{ idea.description }}</p>
+            }
+        </article>
+        }
+    </section>
+    }
 </section>
