@@ -16,6 +16,10 @@ export class AiAssistant {
   question = '';
   answer = '';
 
+  // Info ruta för AI:n
+  showAiInfo = false;
+
+
   // Idéer grupperade utifrån kategorier
   groupedIdeas: {
     category: Idea['categories'];
@@ -168,7 +172,16 @@ export class AiAssistant {
       query.includes('gruppera') ||
       query.includes('gruppering') ||
       query.includes('alla idéer') ||
+      query.includes('kategorisera') ||
+      query.includes('kan du kategorisera') ||
+      query.includes('kan du kategorisera mina idéer') ||
+      query.includes('kan du sammanfatta mina idéer') ||
+      query.includes('efter kategori') ||
+      query.includes('sortera') ||
+      query.includes('kan du sammanfatta') ||
+      query.includes('sammanfatta') ||
       query.includes('alla ideer');
+
 
     // Hittar den första kategorin som innehåller ett sökord
     // som förekommer i användarens fråga.

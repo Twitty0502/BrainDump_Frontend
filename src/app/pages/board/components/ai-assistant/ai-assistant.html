@@ -2,12 +2,35 @@
     <h1>AI-assistent</h1>
     <h2>Kategorisera och sammanfatta dina idéer:</h2>
 
-    <textarea [(ngModel)]="question" placeholder="Vad vill du ha hjälp med?" id="ai-textfield">
+    <textarea [(ngModel)]="question" placeholder="Vad vill du ha hjälp med?" id="ai-textfield"
+        (focus)="showAiInfo = true" (blur)="showAiInfo = false">
 </textarea>
+
     <button type="button" (click)="askAI()">
-        Fråga AI
+        Sök
     </button>
 
+    @if (showAiInfo) {
+    <div class="ai-info">
+        <h3>AI-driven kategorisering av idéer</h3>
+
+        <p>
+            Vår AI hjälper dig att organisera dina idéer genom
+            att analysera nyckelord i varje idés titel och
+            beskrivning. Utifrån orden identifierar AI:n vilken
+            kategori idén passar bäst i och sorterar den automatiskt.
+        </p>
+
+        <p>
+            På så sätt blir det enklare att strukturera, hitta
+            och få en överblick över idéerna på din brainstorming-tavla.
+        </p>
+
+        <small>
+            Obs! Kategoriseringen är automatisk och kan ibland bli fel.
+        </small>
+    </div>
+    }
     @if (answer) {
     <p class="ai-answer">{{ answer }}</p>
     }
