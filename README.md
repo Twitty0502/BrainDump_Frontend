@@ -1,4 +1,5 @@
 # BrainDump – Frontend
+https://braindump-frontend.onrender.com/
 
 BrainDump är en webbaserad applikation för att samla in, organisera och hantera idéer tillsammans med andra deltagare. Syftet är att göra det enkelt att dela tankar, utveckla förbättringsförslag och hitta nya lösningar gemensamt.
 
@@ -83,9 +84,7 @@ Backend är utvecklad med:
 
 ## Installation
 
-### Förutsättningar
-
-# FYLL PÅ HÄR SENARE - DEPLOYAD LÄNK OSV...
+# KONTROLLERA HÄR INNAN INLÄMNING
 
 ### 1. Klona projektet
 
@@ -105,3 +104,6 @@ npm install
 ```bash
 ng serve
 ```
+
+### 4. Anslutning sker vanligtvis till localhost:4200
+
