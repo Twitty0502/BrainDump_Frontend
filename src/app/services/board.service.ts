@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { API_BASE_URL } from '../api.config';
 
 export interface BoardInfo {
     id: string;
@@ -11,7 +12,7 @@ export interface BoardInfo {
     providedIn: 'root'
 })
 export class BoardService {
-    private readonly apiUrl = 'http://localhost:8080/boards';
+    private readonly apiUrl = `${API_BASE_URL}/boards`;
 
     constructor(private http: HttpClient) { }
 
