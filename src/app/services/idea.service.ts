@@ -3,12 +3,13 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 import { Idea, CreateIdeaRequest } from '../models/idea.model';
+import { API_BASE_URL } from '../api.config';
 
 @Injectable({
     providedIn: 'root'
 })
 export class IdeaService {
-    private readonly apiUrl = 'http://localhost:8080/ideas';
+    private readonly apiUrl = `${API_BASE_URL}/ideas`;
 
     constructor(private http: HttpClient) { }
 

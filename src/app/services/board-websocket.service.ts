@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { BoardEvent } from '../models/board-event.model';
+import { API_BASE_URL } from '../api.config';
 
 @Injectable({
     providedIn: 'root'
@@ -20,10 +21,11 @@ export class BoardWebSocketService {
 
             // Hämtar deltagarID från sessionStorage
             const participantId = sessionStorage.getItem('participantId');
+            const websocketBaseUrl = API_BASE_URL.replace(/^http/, 'ws');
 
             // Ansluter till board och skickar med deltagarID
             const socket = new WebSocket(
-                `ws://localhost:8080/ws/boards/${encodeURIComponent(boardId)}?participantId=${encodeURIComponent(participantId ?? '')}`
+                `${websocketBaseUrl}/ws/boards/${encodeURIComponent(boardId)}?participantId=${encodeURIComponent(participantId ?? '')}`
             );
 
             socket.onmessage = (event) => {
