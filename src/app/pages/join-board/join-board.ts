@@ -4,6 +4,7 @@ import { Router, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { RecentBoard } from '../../models/recent-board.model';
 import { RecentBoardsService } from '../../services/recent-boards.service';
+import { API_BASE_URL } from '../../api.config';
 
 @Component({
   selector: 'app-join-board',
@@ -56,8 +57,7 @@ export class JoinBoard implements OnInit {
     // https://angular.dev/api/common/http/HttpClient
     this.http.post<{ id: number; displayName: string }>(
       // encode ser till att ID kodas för att skapa säker URL, t.ex. om ID innehåller mellanslag eller specialtecken.
-      `http://localhost:8080/boards/${encodeURIComponent(id)}/participants`,
-      // skicka visningsnamn till backend
+      `${API_BASE_URL}/boards/${encodeURIComponent(id)}/participants`,      // skicka visningsnamn till backend
       { displayName: name }
     ).subscribe({
       next: (participant) => {

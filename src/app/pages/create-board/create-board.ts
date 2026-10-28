@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { API_BASE_URL } from '../../api.config';
 
 @Component({
   selector: 'app-create-board',
@@ -34,7 +35,7 @@ export class CreateBoard {
     }
     // Skapa ny board
     this.http.post<{ id: string; name: string }>(
-      'http://localhost:8080/boards/create',
+      `${API_BASE_URL}/boards/create`,
       { name }
     ).subscribe({
 
@@ -43,8 +44,7 @@ export class CreateBoard {
         console.log('Board som skapades:', board);
 
         this.http.post<{ id: number; displayName: string }>(
-          `http://localhost:8080/boards/${encodeURIComponent(board.id)}/participants`,
-          { displayName }
+          `${API_BASE_URL}/boards/${encodeURIComponent(board.id)}/participants`, { displayName }
         ).subscribe({
           // Spara deltagarens uppgifter under den aktuella sessionen.
           next: (participant) => {
