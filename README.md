@@ -105,3 +105,7 @@ ng serve
 
 ### 4. Anslutning sker vanligtvis till localhost:4200
 
+## Användning utav AI:
+
+Min användning utav AI har utgått ifrån hjälp vid felsökning samt vid behov då deploy strulade till en början. Detta såsom vid skapande av Dockerfil samt konfigurationen av miljövariablar och produktions miljö "%prod"
+
