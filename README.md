@@ -84,8 +84,6 @@ Backend är utvecklad med:
 
 ## Installation
 
-# KONTROLLERA HÄR INNAN INLÄMNING
-
 ### 1. Klona projektet
 
 ```bash
